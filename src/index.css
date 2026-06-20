@@ -1,0 +1,66 @@
+@import "tailwindcss";
+
+@theme {
+  --color-brand: #2b7bd2;
+  --color-brand-light: #4a9ae8;
+  --color-dark: #0d0e10;
+  --color-dark-card: #1a1b1e;
+  --color-steel: #b8a88a;
+  --font-heading: 'Space Grotesk', 'Inter', sans-serif;
+  --font-body: 'Inter', 'PT Sans', sans-serif;
+}
+
+html, body, #root {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background: #0d0e10;
+  color: white;
+  font-family: 'Inter', 'PT Sans', sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+.font-heading {
+  font-family: 'Space Grotesk', 'Inter', sans-serif;
+}
+
+.glass {
+  background: rgba(13, 14, 16, 0.7);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.glass-light {
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(30px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes pulse-line {
+  0%, 100% { opacity: 0.3; }
+  50% { opacity: 1; }
+}
+
+.animate-fade-in-up {
+  animation: fadeInUp 0.8s ease-out forwards;
+}
+
+.scroll-indicator {
+  animation: pulse-line 2s ease-in-out infinite;
+}
+
+::-webkit-scrollbar {
+  display: none;
+}
