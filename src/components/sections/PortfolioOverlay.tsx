@@ -2,11 +2,11 @@ import { useState } from 'react'
 
 type Category = 'all' | 'residential' | 'social' | 'industrial'
 
-const categories: { key: Category; label: string; shortLabel: string; count: number }[] = [
-  { key: 'all', label: 'Все', shortLabel: 'Все', count: 49 },
-  { key: 'residential', label: 'Жилые', shortLabel: 'Жилые', count: 28 },
-  { key: 'social', label: 'Социальные', shortLabel: 'Соц.', count: 11 },
-  { key: 'industrial', label: 'Промышленные', shortLabel: 'Пром.', count: 10 },
+const categories: { key: Category; label: string; shortLabel: string; count?: number }[] = [
+  { key: 'all', label: 'Все', shortLabel: 'Все', count: 25 },
+  { key: 'residential', label: 'Жилые', shortLabel: 'Жилые', count: 19 },
+  { key: 'social', label: 'Социальные', shortLabel: 'Соц.' },
+  { key: 'industrial', label: 'Промышленные', shortLabel: 'Пром.', count: 6 },
 ]
 
 const projects = [
@@ -39,6 +39,7 @@ const projects = [
 
 export default function PortfolioOverlay() {
   const [filter, setFilter] = useState<Category>('all')
+  const [lightbox, setLightbox] = useState<{ image: string; name: string; location: string; period?: string } | null>(null)
   const filtered = filter === 'all' ? projects : projects.filter(p => p.category === filter)
 
   return (
@@ -63,7 +64,7 @@ export default function PortfolioOverlay() {
             >
               <span className="hidden sm:inline">{cat.label}</span>
               <span className="sm:hidden">{cat.shortLabel}</span>
-              {' '}<span className="text-white/40">{cat.count}</span>
+              {cat.count != null && <>{' '}<span className="text-white/40">{cat.count}</span></>}
             </button>
           ))}
         </div>
@@ -72,6 +73,7 @@ export default function PortfolioOverlay() {
           {filtered.map((project) => (
             <div
               key={project.name}
+              onClick={() => setLightbox(project)}
               className="glass rounded-xl overflow-hidden group hover:border-[#2b7bd2]/30 transition-all cursor-pointer pointer-events-auto"
             >
               <div className="aspect-[4/3] bg-white/5 overflow-hidden">
@@ -95,6 +97,36 @@ export default function PortfolioOverlay() {
           ))}
         </div>
       </div>
+
+      {/* Lightbox */}
+      {lightbox && (
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm pointer-events-auto"
+          onClick={() => setLightbox(null)}
+        >
+          <button
+            className="absolute top-4 right-4 md:top-8 md:right-8 text-white/60 hover:text-white text-3xl font-light z-10"
+            onClick={() => setLightbox(null)}
+          >
+            ✕
+          </button>
+          <div
+            className="max-w-4xl w-full mx-4"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <img
+              src={lightbox.image}
+              alt={lightbox.name}
+              className="w-full rounded-xl shadow-2xl"
+            />
+            <div className="mt-4 text-center">
+              <h3 className="font-heading text-lg md:text-xl font-semibold">{lightbox.name}</h3>
+              <p className="text-white/50 text-sm mt-1">{lightbox.location}</p>
+              {lightbox.period && <p className="text-white/30 text-xs mt-1">{lightbox.period}</p>}
+            </div>
+          </div>
+        </div>
+      )}
     </section>
   )
 }
